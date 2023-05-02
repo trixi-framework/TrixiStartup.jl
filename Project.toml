@@ -1,0 +1,23 @@
+name = "TrixiStartup"
+uuid = "5bf8cac4-7218-4e4b-940a-ca8be4bae9e1"
+authors = ["Michael Schlottke-Lakemper <michael@sloede.com>"]
+version = "0.1.0"
+
+[deps]
+OrdinaryDiffEq = "1dea7af3-3e70-54e6-95c3-0bf5283fa5ed"
+PrecompileTools = "aea7be01-6a6a-4083-8856-8a6e6704d82a"
+Reexport = "189a3867-3050-52da-a836-e630ba90ab69"
+Trixi = "a7f1ee26-1774-49b1-8366-f1abc58fbfcb"
+
+[compat]
+julia = "1.8"
+
+[preferences.OrdinaryDiffEq]
+PrecompileAutoSpecialize = false
+PrecompileAutoSwitch = false
+PrecompileDefaultSpecialize = true
+PrecompileFunctionWrapperSpecialize = false
+PrecompileLowStorage = true
+PrecompileNoSpecialize = false
+PrecompileNonStiff = true
+PrecompileStiff = false
