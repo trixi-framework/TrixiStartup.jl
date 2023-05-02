@@ -55,77 +55,36 @@ Trixi.jl simulation finished.  Final time: 0.01  Time steps: 1 (accepted), 1 (to
  ────────────────────────────────────────────────────────────────────────────────────
               Trixi.jl                      Time                    Allocations
                                    ───────────────────────   ────────────────────────
-         Tot / % measured:              7.07s /  99.8%            662MiB / 100.0%
+         Tot / % measured:              7.16s /  99.8%            661MiB / 100.0%
 
  Section                   ncalls     time    %tot     avg     alloc    %tot      avg
  ────────────────────────────────────────────────────────────────────────────────────
- analyze solution               2    6.95s   98.5%   3.47s    662MiB  100.0%   331MiB
- I/O                            3    108ms    1.5%  36.0ms    156KiB    0.0%  52.0KiB
-   ~I/O~                        3   95.7ms    1.4%  31.9ms    100KiB    0.0%  33.3KiB
-   save solution                2   12.4ms    0.2%  6.20ms   51.0KiB    0.0%  25.5KiB
-   get element variables        2   39.8μs    0.0%  19.9μs   5.16KiB    0.0%  2.58KiB
-   save mesh                    2    170ns    0.0%  85.0ns     0.00B    0.0%    0.00B
- rhs!                           6   47.8μs    0.0%  7.97μs   9.33KiB    0.0%  1.55KiB
-   volume integral              6   24.1μs    0.0%  4.02μs     0.00B    0.0%    0.00B
-   ~rhs!~                       6   9.75μs    0.0%  1.62μs   9.33KiB    0.0%  1.55KiB
-   interface flux               6   5.18μs    0.0%   863ns     0.00B    0.0%    0.00B
-   prolong2interfaces           6   3.94μs    0.0%   657ns     0.00B    0.0%    0.00B
-   surface integral             6   1.97μs    0.0%   328ns     0.00B    0.0%    0.00B
-   prolong2mortars              6    610ns    0.0%   102ns     0.00B    0.0%    0.00B
-   reset ∂u/∂t                  6    600ns    0.0%   100ns     0.00B    0.0%    0.00B
-   Jacobian                     6    500ns    0.0%  83.3ns     0.00B    0.0%    0.00B
-   prolong2boundaries           6    500ns    0.0%  83.3ns     0.00B    0.0%    0.00B
-   mortar flux                  6    380ns    0.0%  63.3ns     0.00B    0.0%    0.00B
-   source terms                 6    140ns    0.0%  23.3ns     0.00B    0.0%    0.00B
-   boundary flux                6    130ns    0.0%  21.7ns     0.00B    0.0%    0.00B
- calculate dt                   2   1.12μs    0.0%   560ns     0.00B    0.0%    0.00B
- ────────────────────────────────────────────────────────────────────────────────────
-
-  7.952507 seconds (12.36 M allocations: 724.299 MiB, 4.71% gc time, 99.66% compilation time: 9% of which was recompilation)
-```
-
-Interestingly, a second run will result in much faster execution time (as
-expected, since some functions that were not properly precompiled have now
-been run successfully), but still include compilation and recompilation time:
-```julia
-julia> @time trixi_include("../precompile/tree_2d_dgsem_elixir_euler_ec.jl", tspan=(0.0, 0.01), initial_refinement_level=1, polydeg=3)
-[ Info: You just called `trixi_include`. Julia may now compile the code, please be patient.
-
-[...]
-
- ────────────────────────────────────────────────────────────────────────────────────
-              Trixi.jl                      Time                    Allocations
-                                   ───────────────────────   ────────────────────────
-         Tot / % measured:             2.57ms /  92.6%            122KiB /  87.3%
-
- Section                   ncalls     time    %tot     avg     alloc    %tot      avg
- ────────────────────────────────────────────────────────────────────────────────────
- I/O                            3   1.93ms   81.4%   645μs   62.2KiB   58.3%  20.7KiB
-   save solution                2   1.22ms   51.3%   609μs   42.1KiB   39.4%  21.0KiB
-   ~I/O~                        3    706μs   29.7%   235μs   15.5KiB   14.6%  5.18KiB
-   get element variables        2   9.72μs    0.4%  4.86μs   4.59KiB    4.3%  2.30KiB
-   save mesh                    2   60.0ns    0.0%  30.0ns     0.00B    0.0%    0.00B
- analyze solution               2    400μs   16.8%   200μs   35.2KiB   33.0%  17.6KiB
- rhs!                           6   42.1μs    1.8%  7.01μs   9.33KiB    8.7%  1.55KiB
-   volume integral              6   22.2μs    0.9%  3.70μs     0.00B    0.0%    0.00B
-   ~rhs!~                       6   9.16μs    0.4%  1.53μs   9.33KiB    8.7%  1.55KiB
-   interface flux               6   4.33μs    0.2%   722ns     0.00B    0.0%    0.00B
-   prolong2interfaces           6   3.11μs    0.1%   518ns     0.00B    0.0%    0.00B
-   surface integral             6   1.58μs    0.1%   263ns     0.00B    0.0%    0.00B
-   Jacobian                     6    360ns    0.0%  60.0ns     0.00B    0.0%    0.00B
-   reset ∂u/∂t                  6    330ns    0.0%  55.0ns     0.00B    0.0%    0.00B
-   prolong2boundaries           6    290ns    0.0%  48.3ns     0.00B    0.0%    0.00B
-   prolong2mortars              6    250ns    0.0%  41.7ns     0.00B    0.0%    0.00B
-   mortar flux                  6    190ns    0.0%  31.7ns     0.00B    0.0%    0.00B
-   source terms                 6    120ns    0.0%  20.0ns     0.00B    0.0%    0.00B
+ analyze solution               2    7.04s   98.5%   3.52s    661MiB  100.0%   330MiB
+ I/O                            3    109ms    1.5%  36.3ms    156KiB    0.0%  52.0KiB
+   ~I/O~                        3   96.3ms    1.3%  32.1ms    100KiB    0.0%  33.3KiB
+   save solution                2   12.6ms    0.2%  6.28ms   51.0KiB    0.0%  25.5KiB
+   get element variables        2   42.0μs    0.0%  21.0μs   5.16KiB    0.0%  2.58KiB
+   save mesh                    2    220ns    0.0%   110ns     0.00B    0.0%    0.00B
+ rhs!                           6   47.3μs    0.0%  7.89μs   9.33KiB    0.0%  1.55KiB
+   volume integral              6   23.5μs    0.0%  3.92μs     0.00B    0.0%    0.00B
+   ~rhs!~                       6   9.05μs    0.0%  1.51μs   9.33KiB    0.0%  1.55KiB
+   interface flux               6   5.30μs    0.0%   883ns     0.00B    0.0%    0.00B
+   prolong2interfaces           6   4.32μs    0.0%   720ns     0.00B    0.0%    0.00B
+   surface integral             6   2.07μs    0.0%   345ns     0.00B    0.0%    0.00B
+   prolong2mortars              6    980ns    0.0%   163ns     0.00B    0.0%    0.00B
+   Jacobian                     6    530ns    0.0%  88.3ns     0.00B    0.0%    0.00B
+   reset ∂u/∂t                  6    480ns    0.0%  80.0ns     0.00B    0.0%    0.00B
+   prolong2boundaries           6    430ns    0.0%  71.7ns     0.00B    0.0%    0.00B
+   mortar flux                  6    390ns    0.0%  65.0ns     0.00B    0.0%    0.00B
+   source terms                 6    130ns    0.0%  21.7ns     0.00B    0.0%    0.00B
    boundary flux                6    120ns    0.0%  20.0ns     0.00B    0.0%    0.00B
- calculate dt                   2    811ns    0.0%   406ns     0.00B    0.0%    0.00B
+ calculate dt                   2   1.04μs    0.0%   520ns     0.00B    0.0%    0.00B
  ────────────────────────────────────────────────────────────────────────────────────
 
-  0.104255 seconds (16.25 k allocations: 1.980 MiB, 22.71% gc time, 65.62% compilation time: 18% of which was recompilation)
+  8.067862 seconds (12.27 M allocations: 717.319 MiB, 4.91% gc time, 99.68% compilation time: 9% of which was recompilation)
 ```
 
-Only when run a third time, all compilation and recompilation is gone:
+When running a second time, all compilation/recompilation is gone, as expected:
 ```julia
 julia> @time trixi_include("../precompile/tree_2d_dgsem_elixir_euler_ec.jl", tspan=(0.0, 0.01), initial_refinement_level=1, polydeg=3)
 [ Info: You just called `trixi_include`. Julia may now compile the code, please be patient.
@@ -135,33 +94,33 @@ julia> @time trixi_include("../precompile/tree_2d_dgsem_elixir_euler_ec.jl", tsp
  ────────────────────────────────────────────────────────────────────────────────────
               Trixi.jl                      Time                    Allocations
                                    ───────────────────────   ────────────────────────
-         Tot / % measured:             2.50ms /  93.2%            122KiB /  87.3%
+         Tot / % measured:             2.54ms /  93.2%            122KiB /  87.3%
 
  Section                   ncalls     time    %tot     avg     alloc    %tot      avg
  ────────────────────────────────────────────────────────────────────────────────────
- I/O                            3   1.90ms   81.5%   632μs   62.2KiB   58.4%  20.7KiB
-   save solution                2   1.20ms   51.5%   599μs   42.1KiB   39.5%  21.0KiB
-   ~I/O~                        3    687μs   29.5%   229μs   15.5KiB   14.6%  5.18KiB
-   get element variables        2   10.6μs    0.5%  5.28μs   4.59KiB    4.3%  2.30KiB
-   save mesh                    2   50.0ns    0.0%  25.0ns     0.00B    0.0%    0.00B
- analyze solution               2    389μs   16.7%   195μs   34.9KiB   32.8%  17.4KiB
- rhs!                           6   41.7μs    1.8%  6.95μs   9.33KiB    8.8%  1.55KiB
-   volume integral              6   21.8μs    0.9%  3.64μs     0.00B    0.0%    0.00B
-   ~rhs!~                       6   9.23μs    0.4%  1.54μs   9.33KiB    8.8%  1.55KiB
-   interface flux               6   4.33μs    0.2%   722ns     0.00B    0.0%    0.00B
-   prolong2interfaces           6   3.14μs    0.1%   523ns     0.00B    0.0%    0.00B
-   surface integral             6   1.53μs    0.1%   255ns     0.00B    0.0%    0.00B
+ I/O                            3   1.94ms   82.0%   647μs   62.2KiB   58.3%  20.7KiB
+   save solution                2   1.23ms   52.0%   616μs   42.1KiB   39.4%  21.0KiB
+   ~I/O~                        3    701μs   29.6%   234μs   15.5KiB   14.6%  5.18KiB
+   get element variables        2   8.97μs    0.4%  4.49μs   4.59KiB    4.3%  2.30KiB
+   save mesh                    2   70.0ns    0.0%  35.0ns     0.00B    0.0%    0.00B
+ analyze solution               2    380μs   16.1%   190μs   35.2KiB   33.0%  17.6KiB
+ rhs!                           6   43.5μs    1.8%  7.25μs   9.33KiB    8.7%  1.55KiB
+   volume integral              6   21.9μs    0.9%  3.65μs     0.00B    0.0%    0.00B
+   ~rhs!~                       6   10.8μs    0.5%  1.80μs   9.33KiB    8.7%  1.55KiB
+   interface flux               6   4.34μs    0.2%   723ns     0.00B    0.0%    0.00B
+   prolong2interfaces           6   3.21μs    0.1%   535ns     0.00B    0.0%    0.00B
+   surface integral             6   1.60μs    0.1%   267ns     0.00B    0.0%    0.00B
+   reset ∂u/∂t                  6    370ns    0.0%  61.7ns     0.00B    0.0%    0.00B
    Jacobian                     6    320ns    0.0%  53.3ns     0.00B    0.0%    0.00B
-   prolong2mortars              6    290ns    0.0%  48.3ns     0.00B    0.0%    0.00B
-   prolong2boundaries           6    290ns    0.0%  48.3ns     0.00B    0.0%    0.00B
-   reset ∂u/∂t                  6    260ns    0.0%  43.3ns     0.00B    0.0%    0.00B
+   prolong2mortars              6    250ns    0.0%  41.7ns     0.00B    0.0%    0.00B
+   prolong2boundaries           6    220ns    0.0%  36.7ns     0.00B    0.0%    0.00B
    mortar flux                  6    200ns    0.0%  33.3ns     0.00B    0.0%    0.00B
-   boundary flux                6    140ns    0.0%  23.3ns     0.00B    0.0%    0.00B
+   boundary flux                6    130ns    0.0%  21.7ns     0.00B    0.0%    0.00B
    source terms                 6    120ns    0.0%  20.0ns     0.00B    0.0%    0.00B
- calculate dt                   2    810ns    0.0%   405ns     0.00B    0.0%    0.00B
+ calculate dt                   2   1.46μs    0.1%   730ns     0.00B    0.0%    0.00B
  ────────────────────────────────────────────────────────────────────────────────────
 
-  0.010666 seconds (10.85 k allocations: 1.627 MiB)
+  0.011306 seconds (10.91 k allocations: 1.630 MiB)
 ```
 
 ## Compare to regular use of OrdinaryDiffEq.jl and Trixi.jl
