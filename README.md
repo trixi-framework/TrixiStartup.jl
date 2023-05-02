@@ -164,6 +164,37 @@ julia> @time trixi_include("../precompile/tree_2d_dgsem_elixir_euler_ec.jl", tsp
   0.010666 seconds (10.85 k allocations: 1.627 MiB)
 ```
 
+## Compare to regular use of OrdinaryDiffEq.jl and Trixi.jl
+To compare this to a regular use of Trixi.jl, go to the `TrixiStartup.jl`
+directory and use the following commands to set up the packages in a new
+`run-regular` directory:
+```shell
+mkdir run-regular && cd run-regular
+JULIA_DEPOT_PATH=$PWD/depot julia-1.9-rc3 --project=. -e 'using Pkg; Pkg.add(["OrdinaryDiffEq", "Trixi"); Pkg.precompile()'
+```
+Then, start Julia
+```shell
+JULIA_DEPOT_PATH=$PWD/depot julia-1.9-rc3 --project=.
+```
+and load OrdinaryDiffEq.jl and Trixi.jl the old-fashioned way, before running
+the same example from above:
+```julia
+julia> @time using OrdinaryDiffEq, Trixi
+  6.396453 seconds (11.96 M allocations: 773.764 MiB, 6.39% gc time, 10.47% compilation time: 18% of which was recompilation)
+
+julia> @time trixi_include("../precompile/tree_2d_dgsem_elixir_euler_ec.jl", tspan=(0.0, 0.01), initial_refinement_level=1, polydeg=3)
+
+[...]
+
+ 20.262184 seconds (39.49 M allocations: 2.274 GiB, 5.83% gc time, 99.84% compilation time: <1% of which was recompilation)
+
+julia> @time trixi_include("../precompile/tree_2d_dgsem_elixir_euler_ec.jl", tspan=(0.0, 0.01), initial_refinement_level=1, polydeg=3)
+
+[...]
+
+  0.010459 seconds (10.73 k allocations: 1.619 MiB)
+```
+
 ## Authors
 TrixiStartup.jl was initiated by
 [Michael Schlottke-Lakemper](https://lakemper.eu)
