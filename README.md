@@ -195,6 +195,12 @@ julia> @time trixi_include("../precompile/tree_2d_dgsem_elixir_euler_ec.jl", tsp
   0.010459 seconds (10.73 k allocations: 1.619 MiB)
 ```
 
+## Reproducibility
+For reproducible testing, there is also a set of `Project.toml`/`Manifest.toml`
+files for the `run` and `run-regular` directories in the [`repro/`](repro/)
+directory, from which it is possible to instantiate the exact same environment
+that was used for testing.
+
 ## Authors
 TrixiStartup.jl was initiated by
 [Michael Schlottke-Lakemper](https://lakemper.eu)
