@@ -1,6 +1,6 @@
 
-using OrdinaryDiffEq
-using Trixi
+# using OrdinaryDiffEq
+# using Trixi
 
 ###############################################################################
 # semidiscretization of the compressible Euler equations
