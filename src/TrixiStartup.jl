@@ -2,6 +2,7 @@ module TrixiStartup
 
 using PrecompileTools: @compile_workload
 using Reexport: @reexport
+using MethodAnalysis
 
 @reexport using OrdinaryDiffEq
 @reexport using Trixi
@@ -70,6 +71,15 @@ using Reexport: @reexport
                 initial_refinement_level=1,
                 polydeg=4,
                )
+end
+
+for mi in methodinstances()
+    mi.def.name === :rhs! || continue
+    try
+        precompile(mi.specTypes)
+    catch e
+        @warn "Precompilation failed for $mi with $(e)"
+    end
 end
 
 end
