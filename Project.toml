@@ -11,9 +11,9 @@ Trixi = "a7f1ee26-1774-49b1-8366-f1abc58fbfcb"
 
 [compat]
 OrdinaryDiffEq = "6"
-PrecompileTools = "1.0.3"
+PrecompileTools = "1.1"
 Reexport = "1"
-Trixi = "0.5"
+Trixi = "0.5.20"
 julia = "1.8"
 
 [preferences.OrdinaryDiffEq]
